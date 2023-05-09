@@ -22,6 +22,6 @@ func NewMux() {
 
 	r.HandleFunc("/comment", handlers.PostCommentHandler).Methods(http.MethodPost)
 
-	log.Println("server start at port 8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Println("server start at port 8000")
+	log.Fatal(http.ListenAndServe(":8000", r))
 }
