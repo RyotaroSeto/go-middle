@@ -3,8 +3,8 @@ package services
 import (
 	"database/sql"
 	"errors"
-	"sample/apperrors"
 	"sample/models"
+	"sample/models/apperrors"
 	"sample/repositories"
 )
 

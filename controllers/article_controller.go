@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"sample/apperrors"
 	"sample/controllers/services"
 	"sample/models"
+	"sample/models/apperrors"
 
 	"github.com/gorilla/mux"
 )

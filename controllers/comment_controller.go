@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"sample/apperrors"
 	"sample/controllers/services"
 	"sample/models"
+	"sample/models/apperrors"
 )
 
 type CommentController struct {

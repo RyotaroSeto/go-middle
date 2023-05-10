@@ -1,8 +1,8 @@
 package services
 
 import (
-	"sample/apperrors"
 	"sample/models"
+	"sample/models/apperrors"
 	"sample/repositories"
 )
 
