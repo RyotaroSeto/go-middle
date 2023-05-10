@@ -1,0 +1,31 @@
+services:
+  mysql:
+    image: mysql:8.0.29
+    platform: linux/amd64
+    container_name: mysql
+    restart: always
+    environment:
+        MYSQL_ROOT_USER: docker
+        MYSQL_ROOT_PASSWORD: docker
+        MYSQL_DATABASE: docker
+        MYSQL_USER: docker
+        MYSQL_PASSWORD: docker
+        TZ: 'Asia/Tokyo'
+    ports:
+        - "3306:3306"
+    volumes:
+      - mysql-db-data:/var/lib/mysql
+      - $PWD/_tools/mysql/conf.d:/etc/mysql/conf.d:cached
+
+  middle:
+    container_name: middle
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-db-data:
