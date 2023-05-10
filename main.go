@@ -4,9 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 	"sample/api"
-	"sample/handlers"
-	"sample/services"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -21,15 +20,16 @@ var (
 )
 
 func main() {
-	db, err := connectDB()
+	con, err := connectDB()
 	if err != nil {
 		log.Println("fail to connect DB")
 		return
 	}
 
-	ser := services.NewMyAppService(db)
-	con := handlers.NewMyAppController(ser)
-	api.NewMux(con)
+	r := api.NewMux(con)
+
+	log.Println("server start at port 8080")
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
 func connectDB() (*sql.DB, error) {

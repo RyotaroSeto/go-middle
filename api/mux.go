@@ -1,27 +1,30 @@
 package api
 
 import (
-	"log"
+	"database/sql"
 	"net/http"
 
-	"sample/handlers"
+	"sample/controllers"
+	"sample/services"
 
 	"github.com/gorilla/mux"
 )
 
-func NewMux(con *handlers.MyAppController) {
+func NewMux(db *sql.DB) *mux.Router {
+	ser := services.NewMyAppService(db)
+	aCon := controllers.NewArticleController(ser)
+	cCon := controllers.NewCommentController(ser)
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/hello", con.HelloHandler).Methods(http.MethodGet)
+	r.HandleFunc("/hello", aCon.HelloHandler).Methods(http.MethodGet)
 
-	r.HandleFunc("/article", con.PostArticleHandler).Methods(http.MethodPost)
-	r.HandleFunc("/article/list", con.ArticleListHandler).Methods(http.MethodGet)
-	r.HandleFunc("/article/{id:[0-9]+}", con.ArticleDetailHandler).Methods(http.MethodGet)
-	r.HandleFunc("/article/nice", con.PostNiceHandler).Methods(http.MethodPost)
+	r.HandleFunc("/article", aCon.PostArticleHandler).Methods(http.MethodPost)
+	r.HandleFunc("/article/list", aCon.ArticleListHandler).Methods(http.MethodGet)
+	r.HandleFunc("/article/{id:[0-9]+}", aCon.ArticleDetailHandler).Methods(http.MethodGet)
+	r.HandleFunc("/article/nice", aCon.PostNiceHandler).Methods(http.MethodPost)
 
-	r.HandleFunc("/comment", con.PostCommentHandler).Methods(http.MethodPost)
+	r.HandleFunc("/comment", cCon.PostCommentHandler).Methods(http.MethodPost)
 
-	log.Println("server start at port 8000")
-	log.Fatal(http.ListenAndServe(":8000", r))
+	return r
 }
