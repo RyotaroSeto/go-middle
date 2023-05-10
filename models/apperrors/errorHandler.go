@@ -5,7 +5,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
-	"sample/api/middlewares"
+	"sample/models"
 )
 
 // エラーが発生したときのレスポンス処理をここで一括で行う
@@ -19,16 +19,20 @@ func ErrorHandler(w http.ResponseWriter, req *http.Request, err error) {
 		}
 	}
 
-	traceID := middlewares.GetTraceID(req.Context())
+	traceID := models.GetTraceID(req.Context())
 	log.Printf("[%d]error: %s\n", traceID, appErr)
 
 	var statusCode int
 
 	switch appErr.ErrCode {
-	case NAData, BadParam:
+	case NAData:
 		statusCode = http.StatusNotFound
-	case NoTargetData, ReqBodyDecodeFailed:
+	case NoTargetData, ReqBodyDecodeFailed, BadParam:
 		statusCode = http.StatusBadRequest
+	case RequiredAuthorizationHeader, Unauthorizated:
+		statusCode = http.StatusUnauthorized
+	case NotMatchUser:
+		statusCode = http.StatusForbidden
 	default:
 		statusCode = http.StatusInternalServerError
 	}

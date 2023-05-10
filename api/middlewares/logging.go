@@ -3,6 +3,7 @@ package middlewares
 import (
 	"log"
 	"net/http"
+	"sample/models"
 )
 
 type resLoggingWriter struct {
@@ -26,7 +27,7 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 		// リクエスト情報をロギング
 		log.Printf("[%d]%s %s\n", traceID, req.RequestURI, req.Method)
 
-		ctx := SetTraceID(req.Context(), traceID)
+		ctx := models.SetTraceID(req.Context(), traceID)
 		req = req.WithContext(ctx)
 		rlw := NewResLoggingWriter(w)
 
