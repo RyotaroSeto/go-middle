@@ -18,6 +18,8 @@ func NewMux(db *sql.DB) *mux.Router {
 
 	r := mux.NewRouter()
 
+	r.HandleFunc("/helthcheck", controllers.HelthCheckHandler).Methods(http.MethodGet)
+
 	r.HandleFunc("/hello", aCon.HelloHandler).Methods(http.MethodGet)
 
 	r.HandleFunc("/article", aCon.PostArticleHandler).Methods(http.MethodPost)
